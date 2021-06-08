@@ -1,3 +1,5 @@
+import 'package:fleet_management/app_translations.dart';
+import 'package:fleet_management/application.dart';
 import 'package:fleet_management/model/dataListModel.dart';
 import 'package:fleet_management/components/schedule_list.dart';
 import 'package:fleet_management/services/services.dart';
@@ -6,6 +8,7 @@ import 'package:fleet_management/repository/user_repository.dart' as userRp;
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'dart:developer' as developer;
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DashBoard extends StatefulWidget {
   static String id = "/SplashScreen";
@@ -15,6 +18,15 @@ class DashBoard extends StatefulWidget {
 }
 
 class _DashBoardState extends State<DashBoard> {
+  static final List<String> languagesList = application.supportedLanguages;
+  static final List<String> languageCodesList =
+      application.supportedLanguagesCodes;
+
+  final Map<dynamic, dynamic> languagesMap = {
+    languagesList[0]: languageCodesList[0],
+    languagesList[1]: languageCodesList[1],
+  };
+
   String selectedDate;
   DateTime startDate, endDate, date;
   bool spinner = false;
@@ -36,16 +48,32 @@ class _DashBoardState extends State<DashBoard> {
   ];
 
   List<String> weekDays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+  String dropdownValue = 'One';
 
   List<ScheduleListBlock> blocks = [];
   List<Map<String, dynamic>> dataList = [];
   List<ScheduleData> scheduleDataList = [];
 
   @override
-  void initState() {
+  Future<void> initState() {
     super.initState();
+    application.onLocaleChanged = onLocaleChange;
+
+    // final prefs = await SharedPreferences.getInstance();
+    // String lang = prefs.getString('lang') ?? '';
+    // if (lang.isEmpty)
+    onLocaleChange(Locale(languagesMap['German']));
+    // else
+    //   onLocaleChange(Locale(languagesMap[lang]));
+
     date = DateTime.now();
     getList(date);
+  }
+
+  void onLocaleChange(Locale locale) async {
+    setState(() {
+      AppTranslations.load(locale);
+    });
   }
 
   Future getDates(DateTime date) async {
@@ -62,6 +90,20 @@ class _DashBoardState extends State<DashBoard> {
         selectedDate = months[picked.month - 1] + " " + picked.year.toString();
       });
     }
+  }
+
+  void _select(String language) {
+    print("dd " + language);
+    // userRp.setCurrentLanguage(language);
+    onLocaleChange(Locale(languagesMap[language]));
+    // setState(() {
+    //   // if (language == "German") {
+    //   //   label = "Deutsche";
+    //   // } else {
+    //   //   label = language;
+    //   // }
+    //   label = AppTranslations.of(context).text("my_duty_schedule");
+    // });
   }
 
   void arrowPress(String direction) async {
@@ -101,7 +143,7 @@ class _DashBoardState extends State<DashBoard> {
     print('dashboard>>>' + endTime);
     print('dashboard>>>' + userRp.currentUser.value.userId);
     var response =
-        await getSchedule(startTime, endTime, userRp.currentUser.value.userId);
+    await getSchedule(startTime, endTime, userRp.currentUser.value.userId);
     setState(() {
       spinner = false;
     });
@@ -149,6 +191,39 @@ class _DashBoardState extends State<DashBoard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: new AppBar(
+        title: new Text(
+          AppTranslations.of(context).text("my_duty_schedule"),
+          style: new TextStyle(color: Colors.white),
+        ),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+                begin: Alignment.centerLeft,
+                end: Alignment.centerRight,
+                colors: [
+                  Colors.blue[800],
+                  Colors.lightBlue[500],
+                  Colors.blue[200],
+                ]),
+          ),
+        ),
+        actions: <Widget>[
+          PopupMenuButton<String>(
+            // overflow menu
+            onSelected: _select,
+            icon: new Icon(Icons.language, color: Colors.white),
+            itemBuilder: (BuildContext context) {
+              return languagesList.map<PopupMenuItem<String>>((String choice) {
+                return PopupMenuItem<String>(
+                  value: choice,
+                  child: Text(choice),
+                );
+              }).toList();
+            },
+          ),
+        ],
+      ),
       body: ModalProgressHUD(
         inAsyncCall: spinner,
         child: Stack(
@@ -173,16 +248,17 @@ class _DashBoardState extends State<DashBoard> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           SizedBox(
-                            height: 16.0,
+                            height: 4.0,
                           ),
-                          Text(
-                            "My Schedule",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 16.0,
-                            ),
-                          ),
+                          // Text(
+                          //   AppTranslations.of(context)
+                          //       .text("my_duty_schedule"),
+                          //   style: TextStyle(
+                          //     color: Colors.white,
+                          //     fontWeight: FontWeight.w500,
+                          //     fontSize: 16.0,
+                          //   ),
+                          // ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -209,8 +285,8 @@ class _DashBoardState extends State<DashBoard> {
                                 selectedDate != null && selectedDate != ""
                                     ? selectedDate
                                     : months[DateTime.now().month - 1] +
-                                        " " +
-                                        DateTime.now().year.toString(),
+                                    " " +
+                                    DateTime.now().year.toString(),
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 26.0,
@@ -245,7 +321,7 @@ class _DashBoardState extends State<DashBoard> {
                     borderRadius: BorderRadius.circular(16.0)),
                 elevation: 2.0,
                 child: Container(
-                  height: MediaQuery.of(context).size.height / 1.2,
+                  height: MediaQuery.of(context).size.height / 1.25, //1.2
                   width: MediaQuery.of(context).size.width,
                   decoration: BoxDecoration(
                     color: Colors.white,
@@ -257,13 +333,13 @@ class _DashBoardState extends State<DashBoard> {
                     padding: EdgeInsets.all(10.0),
                     child: blocks.isNotEmpty
                         ? ListView(
-                            children: blocks,
-                          )
+                      children: blocks,
+                    )
                         : Center(
-                            child: Container(
-                              child: Text("No Schedule"),
-                            ),
-                          ),
+                      child: Container(
+                        child: Text("No Schedule"),
+                      ),
+                    ),
                   ),
                 ),
               ),

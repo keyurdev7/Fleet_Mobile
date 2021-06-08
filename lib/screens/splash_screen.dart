@@ -2,35 +2,35 @@ import 'package:fleet_management/screens/dashboard.dart';
 import 'package:fleet_management/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:fleet_management/repository/user_repository.dart' as userRp;
-
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
-
-  static String id="/SplashScreen";
+  static String id = "/SplashScreen";
 
   @override
   _SplashScreenState createState() => _SplashScreenState();
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-
   @override
   void initState() {
     super.initState();
     getSplashTransition();
   }
 
-  getSplashTransition() async{
-    Future.delayed(Duration(seconds: 4)).whenComplete(() =>
-      userRp.getCurrentUser().whenComplete((){
-        if(userRp.currentUser.value.userId!=null){
-          Navigator.pushReplacementNamed(context, DashBoard.id);
-        }
-        else{
-          Navigator.pushReplacementNamed(context, LoginScreen.id);
-        }
-      })
-    );
+  getSplashTransition() async {
+    Future.delayed(Duration(seconds: 4))
+        .whenComplete(() => userRp.getCurrentUser().whenComplete(() /*async*/ {
+      // final prefs = await SharedPreferences.getInstance();
+      // String lang = prefs.getString('lang') ?? '';
+      // if (lang.isEmpty) prefs.setString('lang', 'German');
+
+      if (userRp.currentUser.value.userId != null) {
+        Navigator.pushReplacementNamed(context, DashBoard.id);
+      } else {
+        Navigator.pushReplacementNamed(context, LoginScreen.id);
+      }
+    }));
   }
 
   @override

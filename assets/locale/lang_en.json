@@ -1,0 +1,9 @@
+{
+  "username": "Username",
+  "password": "Password",
+  "login": "Login",
+  "my_duty_schedule": "My Duty Schedule",
+  "no_duty_schedule": "No Schedule available.",
+  "no_username": "Please Enter Username",
+  "no_password": "Please Enter Password"
+}

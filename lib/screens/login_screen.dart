@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:fleet_management/app_translations.dart';
+import 'package:fleet_management/application.dart';
 import 'package:fleet_management/components/InputFormField.dart';
 import 'package:fleet_management/model/sign_in_model.dart';
 import 'package:fleet_management/screens/dashboard.dart';
@@ -8,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:fleet_management/repository/user_repository.dart' as userRp;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
   static String id = "/LoginScreen";
@@ -17,6 +20,15 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  static final List<String> languagesList = application.supportedLanguages;
+  static final List<String> languageCodesList =
+      application.supportedLanguagesCodes;
+
+  final Map<dynamic, dynamic> languagesMap = {
+    languagesList[0]: languageCodesList[0],
+    languagesList[1]: languageCodesList[1],
+  };
+
   Color clr = Colors.grey[200];
   String countryCode, passWord, userId;
   bool visibility = true;
@@ -44,9 +56,9 @@ class _LoginScreenState extends State<LoginScreen> {
           showSpinner = false;
         });
         userRp.setCurrentUser(jsonEncode(response));
-        userRp.currentUser.value=signInModel;
+        userRp.currentUser.value = signInModel;
         userRp.currentUser.notifyListeners();
-        if(userRp.currentUser.value.userId!=null){
+        if (userRp.currentUser.value.userId != null) {
           Navigator.pushReplacementNamed(context, DashBoard.id);
         }
       }
@@ -58,11 +70,46 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   @override
+  Future<void> initState() {
+    super.initState();
+    application.onLocaleChanged = onLocaleChange;
+    // final prefs = await SharedPreferences.getInstance();
+    // String lang = prefs.getString('lang') ?? '';
+    // if (lang.isEmpty)
+    onLocaleChange(Locale(languagesMap['German']));
+    // else
+    //   onLocaleChange(Locale(languagesMap[lang]));
+
+    // onLocaleChange(Locale(languagesMap[userRp.getCurrentLanguage()]));
+  }
+
+  void onLocaleChange(Locale locale) async {
+    setState(() {
+      AppTranslations.load(locale);
+    });
+  }
+
+  void _select(String language) {
+    print("dd " + language);
+    hideKb();
+    // userRp.setCurrentLanguage(language);
+    onLocaleChange(Locale(languagesMap[language]));
+    // setState(() {
+    //   // if (language == "German") {
+    //   //   label = "Deutsche";
+    //   // } else {
+    //   //   label = language;
+    //   // }
+    //   label = AppTranslations.of(context).text("my_duty_schedule");
+    // });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Login",
+          AppTranslations.of(context).text("login"),
         ),
         flexibleSpace: Container(
           decoration: BoxDecoration(
@@ -76,6 +123,21 @@ class _LoginScreenState extends State<LoginScreen> {
                 ]),
           ),
         ),
+        actions: <Widget>[
+          PopupMenuButton<String>(
+            // overflow menu
+            onSelected: _select,
+            icon: new Icon(Icons.language, color: Colors.white),
+            itemBuilder: (BuildContext context) {
+              return languagesList.map<PopupMenuItem<String>>((String choice) {
+                return PopupMenuItem<String>(
+                  value: choice,
+                  child: Text(choice),
+                );
+              }).toList();
+            },
+          ),
+        ],
       ),
       body: SafeArea(
         child: Center(
@@ -103,7 +165,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: InputFormField(
                         validator: MultiValidator([
                           RequiredValidator(
-                            errorText: "Please Enter Username",
+                            errorText:
+                            AppTranslations.of(context).text("no_username"),
                           ),
                         ]),
                         prefixIcon: Icon(
@@ -114,7 +177,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         onChanged: (value) {
                           userId = value;
                         },
-                        hintText: "Username",
+                        hintText: AppTranslations.of(context).text("username"),
                         keyboardType: TextInputType.emailAddress,
                         obscureText: false,
                       ),
@@ -127,14 +190,16 @@ class _LoginScreenState extends State<LoginScreen> {
                           InputFormField(
                             validator: MultiValidator([
                               RequiredValidator(
-                                  errorText: "Please Enter Password"),
+                                  errorText: AppTranslations.of(context)
+                                      .text("no_password")),
                             ]),
                             prefixIcon: Icon(
                               Icons.lock,
                               color: Colors.lightBlueAccent,
                             ),
                             obscureText: visibility,
-                            hintText: "Password",
+                            hintText:
+                            AppTranslations.of(context).text("password"),
                             suffixIcon: IconButton(
                               onPressed: () {
                                 setState(() {
@@ -163,9 +228,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: TextButton(
                         style: ButtonStyle(
                           backgroundColor:
-                              MaterialStateProperty.all(Colors.lightBlueAccent),
+                          MaterialStateProperty.all(Colors.lightBlueAccent),
                           shape:
-                              MaterialStateProperty.all(RoundedRectangleBorder(
+                          MaterialStateProperty.all(RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(16.0),
                           )),
                         ),
@@ -173,7 +238,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           loginProcess();
                         },
                         child: Text(
-                          "Login",
+                          AppTranslations.of(context).text("login"),
                           style: TextStyle(fontSize: 16.0, color: Colors.white),
                         ),
                       ),

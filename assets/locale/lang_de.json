@@ -1,0 +1,9 @@
+{
+  "username": "Nutzername",
+  "password": "Passwort",
+  "login": "Anmeldung",
+  "my_duty_schedule": "Mein Dienstplan",
+  "no_duty_schedule": "Kein Zeitplan verfügbar.",
+  "no_username": "Bitte geben sie einen Benutzernamen ein",
+  "no_password": "Bitte Passwort eingeben"
+}

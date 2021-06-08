@@ -6,22 +6,31 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 ValueNotifier<SignInModel> currentUser = new ValueNotifier(SignInModel());
 
-void setCurrentUser(String data) async{
-  if(data!=null && data!=""){
-    SharedPreferences prefs=await SharedPreferences.getInstance();
-    prefs.setString(
-        'current_user',
-        data);
+void setCurrentUser(String data) async {
+  if (data != null && data != "") {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('current_user', data);
   }
 }
 
-Future<SignInModel> getCurrentUser() async{
-  SharedPreferences prefs=await SharedPreferences.getInstance();
-  if(prefs.containsKey('current_user')){
-    currentUser.value=SignInModel.fromJson(json.decode(await prefs.getString('current_user')));
+Future<SignInModel> getCurrentUser() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  if (prefs.containsKey('current_user')) {
+    currentUser.value = SignInModel.fromJson(
+        json.decode(await prefs.getString('current_user')));
     currentUser.notifyListeners();
   }
   return currentUser.value;
+}
+
+Future<void> setLanguage(String lang) async {
+  final prefs = await SharedPreferences.getInstance();
+  prefs.setString('lang', lang);
+}
+
+Future<String> getLanguage() async {
+  final prefs = await SharedPreferences.getInstance();
+  return prefs.getString('lang') ?? '';
 }
 
 Future<void> logout() async {
