@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="NONE" />
+  </component>
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="9f1de6b2-da44-4621-99ea-a9b6ee2e4db1" name="Default Changelist" comment="small changes" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Pull.Settings">
+    <option name="BRANCH" value="master" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1tCq2oAVomXvRrJcxiwisuVctT4" />
+  <component name="ProjectViewState">
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="dart.analysis.tool.window.visible" value="false" />
+    <property name="io.flutter.reload.alreadyRun" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../Mobile/Mahesh/RideSharingApp" />
+    <property name="settings.editor.selected.configurable" value="dart.settings" />
+    <property name="show.migrate.to.gradle.popup" value="false" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/assets/images" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="main.dart" type="FlutterRunConfigurationType" factoryName="Flutter">
+      <option name="filePath" value="$PROJECT_DIR$/lib/main.dart" />
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="9f1de6b2-da44-4621-99ea-a9b6ee2e4db1" name="Default Changelist" comment="" />
+      <created>1622283215214</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1622283215214</updated>
+    </task>
+    <task id="LOCAL-00001" summary="Some changes and added logo">
+      <created>1622295136112</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1622295136112</updated>
+    </task>
+    <task id="LOCAL-00002" summary="small changes">
+      <created>1622443367266</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1622443367266</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Some changes and added logo" />
+    <MESSAGE value="small changes" />
+    <option name="LAST_COMMIT_MESSAGE" value="small changes" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="758" y="287" width="424" height="520" key="FileChooserDialogImpl" timestamp="1622443631541">
+      <screen x="40" y="339" width="1880" height="741" />
+    </state>
+    <state x="758" y="287" width="424" height="520" key="FileChooserDialogImpl/1920.312.1366.768/40.339.1880.741@40.339.1880.741" timestamp="1622443631541" />
+    <state width="1834" height="324" key="GridCell.Tab.0.bottom" timestamp="1622973945641">
+      <screen x="40" y="339" width="1880" height="741" />
+    </state>
+    <state width="1834" height="324" key="GridCell.Tab.0.bottom/1920.312.1366.768/40.339.1880.741@40.339.1880.741" timestamp="1622973945641" />
+    <state width="1834" height="324" key="GridCell.Tab.0.center" timestamp="1622973945641">
+      <screen x="40" y="339" width="1880" height="741" />
+    </state>
+    <state width="1834" height="324" key="GridCell.Tab.0.center/1920.312.1366.768/40.339.1880.741@40.339.1880.741" timestamp="1622973945641" />
+    <state width="1834" height="324" key="GridCell.Tab.0.left" timestamp="1622973945641">
+      <screen x="40" y="339" width="1880" height="741" />
+    </state>
+    <state width="1834" height="324" key="GridCell.Tab.0.left/1920.312.1366.768/40.339.1880.741@40.339.1880.741" timestamp="1622973945641" />
+    <state width="1834" height="324" key="GridCell.Tab.0.right" timestamp="1622973945641">
+      <screen x="40" y="339" width="1880" height="741" />
+    </state>
+    <state width="1834" height="324" key="GridCell.Tab.0.right/1920.312.1366.768/40.339.1880.741@40.339.1880.741" timestamp="1622973945641" />
+    <state x="469" y="175" width="1022" height="737" key="SettingsEditor" timestamp="1622283345685">
+      <screen x="40" y="339" width="1880" height="741" />
+    </state>
+    <state x="469" y="175" width="1022" height="737" key="SettingsEditor/1920.312.1366.768/40.339.1880.741@40.339.1880.741" timestamp="1622283345685" />
+    <state x="575" y="276" width="800" height="535" key="Vcs.Push.Dialog.v2" timestamp="1622443452482">
+      <screen x="40" y="339" width="1880" height="741" />
+    </state>
+    <state x="575" y="276" width="800" height="535" key="Vcs.Push.Dialog.v2/1920.312.1366.768/40.339.1880.741@40.339.1880.741" timestamp="1622443452482" />
+    <state x="784" y="169" width="381" height="748" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1622972964734">
+      <screen x="40" y="339" width="1880" height="741" />
+    </state>
+    <state x="784" y="169" width="381" height="748" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/1920.312.1366.768/40.339.1880.741@40.339.1880.741" timestamp="1622972964734" />
+    <state x="671" y="279" width="642" height="522" key="find.popup" timestamp="1622973340228">
+      <screen x="40" y="339" width="1880" height="741" />
+    </state>
+    <state x="671" y="279" width="642" height="522" key="find.popup/1920.312.1366.768/40.339.1880.741@40.339.1880.741" timestamp="1622973340228" />
+    <state x="462" y="266" width="1026" height="554" key="new project wizard" timestamp="1622283258607">
+      <screen x="40" y="339" width="1880" height="741" />
+    </state>
+    <state x="462" y="266" width="1026" height="554" key="new project wizard/1920.312.1366.768/40.339.1880.741@40.339.1880.741" timestamp="1622283258607" />
+    <state x="644" y="245" key="run.anything.popup" timestamp="1622971287619">
+      <screen x="40" y="339" width="1880" height="741" />
+    </state>
+    <state x="644" y="245" key="run.anything.popup/1920.312.1366.768/40.339.1880.741@40.339.1880.741" timestamp="1622971287619" />
+  </component>
+</project>
