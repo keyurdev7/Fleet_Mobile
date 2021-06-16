@@ -23,7 +23,7 @@ Future signUser(String userName, String password, bool isAdmin) async {
   }
 }
 
-Future getSchedule(String startTime, String endTime, String userId) async {
+Future<List<dynamic>> getSchedule(String startTime, String endTime, String userId) async {
   http.Response response = await http.post(
     Uri.parse(urlGetSchedule),
     headers: {"Accept": "application/json", "content-type": "application/json"},
