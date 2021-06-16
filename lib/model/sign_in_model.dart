@@ -6,8 +6,9 @@ class SignInModel{
   String lastName;
   String isAdmin;
   String password;
+  String token;
 
-  SignInModel({this.password,this.userId,this.email,this.firstName,this.isAdmin,this.lastName});
+  SignInModel({this.password,this.userId,this.email,this.firstName,this.isAdmin,this.lastName,this.token});
 
   factory SignInModel.fromJson(Map<String,dynamic> json){
     return SignInModel(
@@ -17,6 +18,7 @@ class SignInModel{
       lastName: json['LastName'],
       isAdmin: json['isAdmin'],
       password: json['password'],
+      token: json['Token'],
     );
   }
 

@@ -5,5 +5,7 @@
   "my_duty_schedule": "Mein Dienstplan",
   "no_duty_schedule": "Kein Zeitplan verfügbar.",
   "no_username": "Bitte geben sie einen Benutzernamen ein",
-  "no_password": "Bitte Passwort eingeben"
+  "no_password": "Bitte Passwort eingeben",
+  "btn_accept": "Akzeptieren",
+  "btn_decline": "Ablehnen"
 }

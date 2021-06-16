@@ -5,5 +5,7 @@
   "my_duty_schedule": "My Duty Schedule",
   "no_duty_schedule": "No Schedule available.",
   "no_username": "Please Enter Username",
-  "no_password": "Please Enter Password"
+  "no_password": "Please Enter Password",
+  "btn_accept": "Accept",
+  "btn_decline": "Decline"
 }

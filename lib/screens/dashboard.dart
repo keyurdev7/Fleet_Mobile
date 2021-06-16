@@ -2,6 +2,7 @@ import 'package:fleet_management/app_translations.dart';
 import 'package:fleet_management/application.dart';
 import 'package:fleet_management/model/dataListModel.dart';
 import 'package:fleet_management/components/schedule_list.dart';
+import 'package:fleet_management/model/updateStatusModel.dart';
 import 'package:fleet_management/services/services.dart';
 import 'package:flutter/material.dart';
 import 'package:fleet_management/repository/user_repository.dart' as userRp;
@@ -28,9 +29,15 @@ class _DashBoardState extends State<DashBoard> {
   };
 
   String selectedDate;
+  String startTime;
+  String cuurentStatus;
+  String endTime;
+  bool isEnabled = true;
+
   DateTime startDate, endDate, date;
   bool spinner = false;
   ScheduleListModel scheduleListModel;
+  UpdateStatusModel updateStatusModel;
 
   List<String> months = [
     'January',
@@ -137,11 +144,12 @@ class _DashBoardState extends State<DashBoard> {
     });
     endDate = date.add(Duration(days: (7 - date.weekday)));
     startDate = date.subtract(Duration(days: (date.weekday - 1)));
-    String startTime = arrangeDate(startDate);
-    String endTime = arrangeDate(endDate);
-    print('dashboard>>>' + startTime);
-    print('dashboard>>>' + endTime);
-    print('dashboard>>>' + userRp.currentUser.value.userId);
+    startTime = arrangeDate(startDate);
+    endTime = arrangeDate(endDate);
+    print('getList>>>' + startTime);
+    print('getList>>>' + endTime);
+    print('getList>>>' + userRp.currentUser.value.userId);
+    print('getList>>>' + userRp.currentUser.value.token);
     var response =
     await getSchedule(startTime, endTime, userRp.currentUser.value.userId);
     setState(() {
@@ -152,22 +160,69 @@ class _DashBoardState extends State<DashBoard> {
       for (var data in scheduleListModel.scheduleList) {
         scheduleDataList.add(data);
       }
-      setState(() {
-        for (var data in scheduleDataList) {
-          String weekDate = getDateNumberFromDate(data.date);
-          String weekDay = getDayFromDate(data.date);
-          // var dateString = data.date.split("-");
-          // String weekDate = dateString[2].split("T")[0];
-          // String weekDay = getWeekDay(startDate, int.parse(weekDate));
-          blocks.add(ScheduleListBlock(
-            timeSlot: data.beginTime + " - " + data.endTime,
-            labelText: data.service,
-            day: weekDate,
-            weekDay: weekDay,
-          ));
+      if (scheduleDataList.isNotEmpty) {
+        cuurentStatus = scheduleDataList.first.status;
+        if (cuurentStatus == "Accept" || cuurentStatus == "Reject") {
+          setState(() {
+            isEnabled = false;
+          });
         }
-      });
-      print(blocks);
+        if (cuurentStatus == "New") {
+          updateScheduleStatus("Read");
+          setState(() {
+            isEnabled = true;
+          });
+        } else {
+          setState(() {
+            for (var data in scheduleDataList) {
+              String weekDate = getDateNumberFromDate(data.date);
+              String weekDay = getDayFromDate(data.date);
+              // var dateString = data.date.split("-");
+              // String weekDate = dateString[2].split("T")[0];
+              // String weekDay = getWeekDay(startDate, int.parse(weekDate));
+              blocks.add(ScheduleListBlock(
+                timeSlot: data.beginTime + " - " + data.endTime,
+                labelText: data.service,
+                day: weekDate,
+                weekDay: weekDay,
+              ));
+            }
+          });
+          print(blocks);
+        }
+      }else{
+        setState(() {
+          isEnabled = false;
+        });
+      }
+    }
+  }
+
+  Future updateScheduleStatus(String status) async {
+    blocks.clear();
+    scheduleDataList.clear();
+    setState(() {
+      spinner = true;
+    });
+    print('updateScheduleStatus>>>' + startTime);
+    print('updateScheduleStatus>>>' + endTime);
+    print('updateScheduleStatus>>>' + userRp.currentUser.value.userId);
+    print('updateScheduleStatus>>>' + userRp.currentUser.value.userId);
+    var response = await updateStatus(
+        startTime,
+        endTime,
+        userRp.currentUser.value.userId,
+        status,
+        userRp.currentUser.value.token);
+    setState(() {
+      spinner = false;
+    });
+    if (response.isNotEmpty) {
+      updateStatusModel = UpdateStatusModel.fromJson(response);
+
+      if (updateStatusModel.success) {
+        getList(date);
+      }
     }
   }
 
@@ -315,32 +370,105 @@ class _DashBoardState extends State<DashBoard> {
               ],
             ),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 4.0),
+              padding: EdgeInsets.symmetric(horizontal: 6.0),
               child: Card(
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(16.0)),
                 elevation: 2.0,
                 child: Container(
-                  height: MediaQuery.of(context).size.height / 1.25, //1.2
-                  width: MediaQuery.of(context).size.width,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(20.0),
-                        topRight: Radius.circular(20.0)),
-                  ),
-                  child: Padding(
-                    padding: EdgeInsets.all(10.0),
-                    child: blocks.isNotEmpty
-                        ? ListView(
-                      children: blocks,
-                    )
-                        : Center(
-                      child: Container(
-                        child: Text("No Schedule"),
-                      ),
+                    height: MediaQuery.of(context).size.height / 1.25, //1.2
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(20.0),
+                          topRight: Radius.circular(20.0)),
                     ),
-                  ),
+                    child: Stack(children: [
+                      Padding(
+                        padding: EdgeInsets.all(4.0),
+                        child: blocks.isNotEmpty
+                            ? ListView(
+                          children: blocks,
+                        )
+                            : Center(
+                          child: Container(
+                            child: Text(AppTranslations.of(context)
+                                .text("no_duty_schedule")),
+                          ),
+                        ),
+                      ),
+                      Align(
+                          alignment: Alignment.bottomCenter,
+                          // padding: EdgeInsets.all(0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              SizedBox(
+                                width: 130, // <-- Your width
+                                child: TextButton(
+                                  style: ButtonStyle(
+                                    backgroundColor: MaterialStateProperty.all(
+                                        Colors.blue[500]),
+                                    shape: MaterialStateProperty.all(
+                                        RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(16.0),
+                                        )),
+                                  ),
+                                  child: Text(
+                                      AppTranslations.of(context)
+                                          .text("btn_accept"),
+                                      style: TextStyle(
+                                          fontSize: 16.0, color: Colors.white)),
+                                  onPressed: isEnabled ?() => updateScheduleStatus("Accept") : null,
+                                  // {
+                                  //   if (cuurentStatus == "Read")
+                                  //     updateScheduleStatus("Accept");
+                                  // },
+                                ),
+                              ),
+                              SizedBox(width: 16),
+                              SizedBox(
+                                width: 130, // <-- Your width
+                                child: TextButton(
+                                  style: ButtonStyle(
+                                    backgroundColor:
+                                    MaterialStateProperty.all(
+                                        Colors.red[500]),
+                                    shape: MaterialStateProperty.all(
+                                        RoundedRectangleBorder(
+                                          borderRadius:
+                                          BorderRadius.circular(16.0),
+                                        )),
+                                  ),
+                                  child: Text(
+                                      AppTranslations.of(context)
+                                          .text("btn_decline"),
+                                      style: TextStyle(
+                                          fontSize: 16.0,
+                                          color: Colors.white)),
+                                  onPressed: isEnabled ?() => updateScheduleStatus("Reject") : null,
+                                  /*{
+                                      if (cuurentStatus == "Read")
+                                        updateScheduleStatus("Reject");
+                                    }*/),
+                              ),
+                            ],
+                          ))
+                    ])
+                  //   Padding(
+                  //   padding: EdgeInsets.all(4.0),
+                  //   child: blocks.isNotEmpty
+                  //       ? ListView(
+                  //           children: blocks,
+                  //         )
+                  //       : Center(
+                  //           child: Container(
+                  //             child: Text(AppTranslations.of(context)
+                  //                 .text("no_duty_schedule")),
+                  //           ),
+                  //         ),
+                  // ),
                 ),
               ),
             ),
