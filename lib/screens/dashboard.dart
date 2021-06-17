@@ -2,7 +2,9 @@ import 'package:fleet_management/app_translations.dart';
 import 'package:fleet_management/application.dart';
 import 'package:fleet_management/model/dataListModel.dart';
 import 'package:fleet_management/components/schedule_list.dart';
+import 'package:fleet_management/model/sign_in_model.dart';
 import 'package:fleet_management/model/updateStatusModel.dart';
+import 'package:fleet_management/screens/login_screen.dart';
 import 'package:fleet_management/services/services.dart';
 import 'package:flutter/material.dart';
 import 'package:fleet_management/repository/user_repository.dart' as userRp;
@@ -102,16 +104,7 @@ class _DashBoardState extends State<DashBoard> {
 
   void _select(String language) {
     print("dd " + language);
-    // userRp.setCurrentLanguage(language);
     onLocaleChange(Locale(languagesMap[language]));
-    // setState(() {
-    //   // if (language == "German") {
-    //   //   label = "Deutsche";
-    //   // } else {
-    //   //   label = language;
-    //   // }
-    //   label = AppTranslations.of(context).text("my_duty_schedule");
-    // });
   }
 
   void arrowPress(String direction) async {
@@ -252,6 +245,15 @@ class _DashBoardState extends State<DashBoard> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: new AppBar(
+        leading:GestureDetector(
+            onTap:() async {
+              // userRp.currentUser.value.userId = null;
+              SharedPreferences prefs = await SharedPreferences.getInstance();
+              prefs.remove('current_user');
+              Navigator.pushReplacementNamed(context, LoginScreen.id);
+            },
+            child: Icon(Icons.logout, color: Colors.white,)
+        ) ,
         title: new Text(
           AppTranslations.of(context).text("my_duty_schedule"),
           style: new TextStyle(color: Colors.white),
