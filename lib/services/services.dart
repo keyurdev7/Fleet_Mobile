@@ -19,14 +19,14 @@ Future signUser(String userName, String password, bool isAdmin) async {
   if (response.statusCode == 200) {
     return jsonDecode(response.body);
   } else {
-    return null;
+    return jsonDecode(response.body);
   }
 }
 
-Future<List<dynamic>> getSchedule(String startTime, String endTime, String userId) async {
+Future<List<dynamic>> getSchedule(String startTime, String endTime, String userId, String token) async {
   http.Response response = await http.post(
     Uri.parse(urlGetSchedule),
-    headers: {"Accept": "application/json", "content-type": "application/json"},
+    headers: {"Accept": "application/json", "content-type": "application/json", "Authorization": "Bearer " + token},
     body: jsonEncode({
       "UserId": userId,
       "BeginTime": startTime,

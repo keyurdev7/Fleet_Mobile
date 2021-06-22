@@ -50,17 +50,38 @@ class _LoginScreenState extends State<LoginScreen> {
       form.save();
       hideKb();
       var response = await signUser(userId, passWord, true);
+      var status = response["Success"] as bool;
+      print("++++++ status: "+status.toString());
       signInModel = SignInModel.fromJson(response);
-      if (signInModel.userId != null) {
+      if (status/*signInModel.userId != null*/) {
         setState(() {
           showSpinner = false;
         });
         userRp.setCurrentUser(jsonEncode(response));
         userRp.currentUser.value = signInModel;
         userRp.currentUser.notifyListeners();
+
         if (userRp.currentUser.value.userId != null) {
           Navigator.pushReplacementNamed(context, DashBoard.id);
         }
+      }else{
+        setState(() {
+          showSpinner = false;
+        });
+        final alert = AlertDialog(
+          title: Text("Log"),
+          content: Text(signInModel.errors),
+          actions: [FlatButton(child: Text("OK"), onPressed: () {
+            Navigator.pop(context);
+          })],
+        );
+
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return alert;
+          },
+        );
       }
     } else {
       setState(() {

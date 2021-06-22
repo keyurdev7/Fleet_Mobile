@@ -145,10 +145,26 @@ class _DashBoardState extends State<DashBoard> {
     print('getList>>>' + userRp.currentUser.value.userId);
     print('getList>>>' + userRp.currentUser.value.token);
     var response =
-    await getSchedule(startTime, endTime, userRp.currentUser.value.userId);
+    await getSchedule(startTime, endTime, userRp.currentUser.value.userId,userRp.currentUser.value.token);
     setState(() {
       spinner = false;
     });
+
+    // final alert = AlertDialog(
+    //   title: Text("Log"),
+    //   content: Text("Schedule details: response: "+response.toString()),
+    //   actions: [FlatButton(child: Text("OK"), onPressed: () {
+    //     Navigator.pop(context);
+    //   })],
+    // );
+    //
+    // showDialog(
+    //   context: context,
+    //   builder: (BuildContext context) {
+    //     return alert;
+    //   },
+    // );
+
     if (response.length !=0) {
       _isVisible = true;
       scheduleListModel = ScheduleListModel.fromList(response);
@@ -215,11 +231,27 @@ class _DashBoardState extends State<DashBoard> {
     setState(() {
       spinner = false;
     });
+
     if (response.isNotEmpty) {
       updateStatusModel = UpdateStatusModel.fromJson(response);
 
       if (updateStatusModel.success) {
         getList(date);
+      }else{
+        final alert = AlertDialog(
+          title: Text("Log"),
+          content: Text("Status update fail."),
+          actions: [FlatButton(child: Text("OK"), onPressed: () {
+            Navigator.pop(context);
+          })],
+        );
+
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return alert;
+          },
+        );
       }
     }
   }
